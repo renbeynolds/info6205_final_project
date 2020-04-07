@@ -14,5 +14,5 @@ This application is a ranking system capable of predicting league standings for 
 
 ## Running the Program
 ```bash
-java -jar build/libs/eplranking-0.0.0.jar datasets/*
+java -jar build/libs/eplranking-0.0.0.jar ./datasets/ 2000 2003
 ```
