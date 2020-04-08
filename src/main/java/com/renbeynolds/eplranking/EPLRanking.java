@@ -1,19 +1,59 @@
 package com.renbeynolds.eplranking;
 
+import java.util.Map;
 import java.util.Set;
 
 public class EPLRanking {
-    public static void main(String[] args) {
 
-        Set<MatchInfo> matches;
+    private static Args parseArgs(String[] args) {
         try {
+            if (args.length != 3) {
+                throw new Exception("Incorrect number of arguments!");
+            }
             String dataDir = args[0];
-            Integer firstSeasonStartYear = Integer.valueOf(args[1]);
-            Integer lastSeasonStartYear = Integer.valueOf(args[2]);
-            matches = DataLoader.loadData(dataDir, firstSeasonStartYear, lastSeasonStartYear);
-        } catch(Exception e) {
+            int firstSeasonStartYear = Integer.parseInt(args[1]);
+            int lastSeasonStartYear = Integer.parseInt(args[2]);
+            if (firstSeasonStartYear > lastSeasonStartYear) {
+                throw new Exception("firstSeasonStartYear must not be greater than lastSeasonStartYear!");
+            }
+            return new Args(dataDir, firstSeasonStartYear, lastSeasonStartYear);
+        } catch (Exception e) {
             System.err.println("USAGE: java -jar /path/to/data/directory <firstSeasonStartYear> <lastSeasonStartYear>");
+            System.exit(1);
+            return null;
+        }
+    }
+
+    private static class Args {
+        private Args(String dataDir, int firstSeasonStartYear, int lastSeasonStartYear) {
+            this.dataDir = dataDir;
+            this.firstSeasonStartYear = firstSeasonStartYear;
+            this.lastSeasonStartYear = lastSeasonStartYear;
         }
 
+        String dataDir;
+        int firstSeasonStartYear;
+        int lastSeasonStartYear;
     }
+
+    public static void main(String[] args) {
+
+        Args parsedArgs = parseArgs(args);
+
+        Set<MatchInfo> matches = DataLoader.loadData(
+            parsedArgs.dataDir,
+            parsedArgs.firstSeasonStartYear,
+            parsedArgs.lastSeasonStartYear
+        );
+
+        TeamModelBuilder builder = new TeamModelBuilder(matches);
+        Map<String,TeamModel> teams = builder.build();
+        System.out.println(teams.get("Man City").getAvgAwayScored());
+        System.out.println(teams.get("Bradford").getAvgAwayScored());
+        System.out.println(teams.get("Leicester").getAvgAwayScored());
+
+
+
+    }
+
 }

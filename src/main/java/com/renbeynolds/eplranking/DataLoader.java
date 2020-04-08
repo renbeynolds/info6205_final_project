@@ -9,15 +9,15 @@ import java.util.Set;
 
 public class DataLoader {
 
-    public static Set<MatchInfo> loadData(String dataDir, Integer firstSeasonStartYear, Integer lastSeasonStartYear) {
+    public static Set<MatchInfo> loadData(String dataDir, int firstSeasonStartYear, int lastSeasonStartYear) {
         Set<MatchInfo> matches = new HashSet<MatchInfo>();
         for(int year = firstSeasonStartYear; year < lastSeasonStartYear + 1; year++) {
-            matches.addAll(DataLoader.readFile(Paths.get(dataDir, String.format("%d-%d.csv", year, year + 1)).toString()));
+            matches.addAll(readFile(Paths.get(dataDir, String.format("%d-%d.csv", year, year + 1)).toString()));
         }
         return matches;
     }
 
-    public static Set<MatchInfo> readFile(String filename) {
+    private static Set<MatchInfo> readFile(String filename) {
         String line = "";
         String cvsSplitBy = ",";
         Set<MatchInfo> result = new HashSet<MatchInfo>();
