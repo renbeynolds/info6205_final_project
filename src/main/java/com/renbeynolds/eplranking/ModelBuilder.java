@@ -21,11 +21,17 @@ public class ModelBuilder {
     }
 
     public void build() {
+        // Perform inital counts for home and away scores
         for(MatchInfo match : matches) {
             league.addMatch(match);
             teams.get(match.getHomeTeam()).addHomeMatch(match);
             teams.get(match.getAwayTeam()).addAwayMatch(match);
         }
+
+        // normalize team models based on overall league data
+        for (Map.Entry<String,TeamModel> team : teams.entrySet()) {
+            team.getValue().normalize(league);
+        }  
     }
 
     public Map<String,TeamModel> getTeamModels() {

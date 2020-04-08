@@ -9,6 +9,11 @@ public class TeamModel {
     private double totalAwayScored = 0;
     private double totalAwayConceded = 0;
 
+    private double homeAttackStrength;
+    private double homeDefenseStrength;
+    private double awayAttackStrength;
+    private double awayDefenseStrength;
+
     public void addHomeMatch(MatchInfo match) {
         this.numHomeGames += 1;
         this.totalHomeScored += match.getHomeGoals();
@@ -35,6 +40,29 @@ public class TeamModel {
 
     public double getAvgAwayConceded() {
         return totalAwayConceded / numAwayGames;
+    }
+    
+    public double getHomeAttackStrength() {
+        return homeAttackStrength;
+    }
+
+    public double getHomeDefenseStrength() {
+        return homeDefenseStrength;
+    }
+
+    public double getAwayAttackStrength() {
+        return awayAttackStrength;
+    }
+
+    public double getAwayDefenseStrength() {
+        return awayDefenseStrength;
+    }
+
+    public void normalize(LeagueModel league) {
+        this.homeAttackStrength = getAvgHomeScored() / league.getAvgHomeScored();
+        this.homeDefenseStrength = getAvgHomeConceded() / league.getAvgHomeConceded();
+        this.awayAttackStrength = getAvgAwayScored() / league.getAvgAwayScored();
+        this.awayDefenseStrength = getAvgAwayConceded() / league.getAvgAwayConceded();
     }
 
 }
