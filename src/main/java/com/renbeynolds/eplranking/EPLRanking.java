@@ -46,8 +46,11 @@ public class EPLRanking {
             parsedArgs.lastSeasonStartYear
         );
 
-        TeamModelBuilder builder = new TeamModelBuilder(matches);
-        Map<String,TeamModel> teams = builder.build();
+        ModelBuilder builder = new ModelBuilder(matches);
+        builder.build();
+        Map<String,TeamModel> teams = builder.getTeamModels();
+        LeagueModel league = builder.getLeagueModel();
+        
         System.out.println(teams.get("Man City").getAvgAwayScored());
         System.out.println(teams.get("Bradford").getAvgAwayScored());
         System.out.println(teams.get("Leicester").getAvgAwayScored());
