@@ -2,6 +2,13 @@
 
 This application is a ranking system capable of predicting league standings for the English Premier League based on past match outcomes.
 
+- [Running Tests](#running-tests)
+- [Building the Application](#building-the-application)
+- [Running the Program](#running-the-program)
+    - [Command Line Help](#command-line-help)
+    - [Team Rankings Based on Historic Data](#team-rankings-based-on-historic-data)
+    - [Expected Outcome of Single Match](#expected-outcome-of-single-match)
+
 ## Running Tests
 ```
 ./gradlew test
@@ -14,11 +21,36 @@ This application is a ranking system capable of predicting league standings for 
 
 ## Running the Program
 
-### Show Rankings Based on Historic Data
+#### Command Line Help
+
+List the available commands and options.
+
+```bash
+java -jar build/libs/eplranking.jar --help
+```
+
+#### Team Rankings Based on Historic Data
+
+Produces a ranked table of teams based on the expected number of points achieved in a tournament of all teams present in the input data set.
+
 ```bash
 java -jar build/libs/eplranking.jar \
-    -dataDir ./datasets \
-    -firstSeasonStartYear 2008 \
-    -lastSeasonStartYear 2010 \
-    -rank
+    rank \
+    -d ./datasets \
+    -f 2000 \
+    -l 2018
+```
+
+#### Expected Outcome of Single Match
+
+Displays detailed information on the expected outcome of a head to head match between two teams.
+
+```bash
+java -jar build/libs/eplranking.jar \
+    compete \
+    -d ./datasets \
+    -f 2000 \
+    -l 2018 \
+    -h "Man City" \
+    -a "Liverpool"
 ```
