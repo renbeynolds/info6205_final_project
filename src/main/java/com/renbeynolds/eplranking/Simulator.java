@@ -14,24 +14,18 @@ import lombok.Getter;
 @Getter
 public class Simulator {
 
-    private final Set<MatchModel> matchModels;
     private final Map<String,TeamModel> teamModels;
     private final LeagueModel leagueModel;
-    private Map<String, Map<String, MatchResult>> matchResults = new HashMap<String, Map<String,MatchResult>>(); 
 
-    public Simulator(String dataDir, int firstSeasonStartYear, int lastSeasonStartYear) {
-        this.matchModels = DataLoader.loadData(
-            dataDir,
-            firstSeasonStartYear,
-            lastSeasonStartYear
-        );
-        ModelBuilder builder = new ModelBuilder(this.matchModels);
+    public Simulator(Set<MatchModel> matchModels) {
+        ModelBuilder builder = new ModelBuilder(matchModels);
         builder.build();
         this.teamModels = builder.getTeamModels();
         this.leagueModel = builder.getLeagueModel();
     }
 
-    public void simulateSeason() {
+    public Map<String, Map<String, MatchResult>> simulateSeason() {
+        Map<String, Map<String, MatchResult>> matchResults = new HashMap<String, Map<String,MatchResult>>(); 
         // each team plays each other team twice, once at home and once away
         for (Map.Entry<String,TeamModel> homeTeam : teamModels.entrySet()) {
             Map<String,MatchResult> teamResults = new HashMap<String, MatchResult>();
@@ -45,6 +39,7 @@ public class Simulator {
             }
             matchResults.put(homeTeam.getKey(), teamResults);
         }
+        return matchResults;
     }
 
     public MatchResult simulateMatch(String homeTeamName, String awayTeamName) {

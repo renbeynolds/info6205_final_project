@@ -14,13 +14,12 @@ public class Table extends BaseCommand {
     @Override
     public void run() {
         super.run();
-        simulator.simulateSeason();
-        printTable();
+        Map<String, Map<String, MatchResult>> matchResults = simulator.simulateSeason();
+        printTable(matchResults);
     }
 
-    private void printTable() {
+    private void printTable(Map<String, Map<String, MatchResult>> matchResults) {
         Map<String,TeamModel> teamModels = simulator.getTeamModels();
-        Map<String, Map<String, MatchResult>> matchResults = simulator.getMatchResults();
         System.out.println("home/away,"+ teamModels.keySet().stream().map(s -> String.format("%s", s)).collect(Collectors.joining(",")));
         for(String homeTeamName : teamModels.keySet()) {
             System.out.printf(homeTeamName);
