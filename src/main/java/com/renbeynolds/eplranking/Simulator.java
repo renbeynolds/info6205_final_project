@@ -1,8 +1,5 @@
 package com.renbeynolds.eplranking;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +14,10 @@ public class Simulator {
     private final Map<String,TeamModel> teamModels;
     private final LeagueModel leagueModel;
 
+    public Map<String,TeamModel> getTeamModels() {
+        return this.teamModels;
+    }
+
     public Simulator(String dataDir, int firstSeasonStartYear, int lastSeasonStartYear) {
         this.matchModels = DataLoader.loadData(
             dataDir,
@@ -29,7 +30,7 @@ public class Simulator {
         this.leagueModel = builder.getLeagueModel();
     }
 
-    public void getRankings() {
+    public void rank() {
         // each team plays each other team twice, once at home and once away
         for (Map.Entry<String,TeamModel> homeTeam : teamModels.entrySet()) {
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
@@ -40,20 +41,9 @@ public class Simulator {
                 }
             }
         }
-        printRankingTable();
     }
 
-    private void printRankingTable() {
-        System.out.println();
-        List<TeamModel> teamList = new ArrayList<TeamModel>(teamModels.values());
-        Collections.sort(teamList, Collections.reverseOrder());
-        for (int i = 0; i < teamList.size(); i ++) {
-            System.out.println(String.format("%d - %s - %.2f", i+1, teamList.get(i).getName(), teamList.get(i).getPoints()));
-        }
-        System.out.println();
-    }
-
-    private MatchResult simulateMatch(String homeTeamName, String awayTeamName) {
+    public MatchResult simulateMatch(String homeTeamName, String awayTeamName) {
         double muHome = teamModels.get(homeTeamName).getHomeAttackStrength() *
                 teamModels.get(awayTeamName).getAwayDefenseStrength() * leagueModel.getAvgHomeScored();
         double muAway = teamModels.get(awayTeamName).getAwayAttackStrength() *
@@ -63,10 +53,19 @@ public class Simulator {
         double pTie = 0;
         double pAway = 0;
 
+        double highestProbability = 0;
+        int mostLikelyHomeGoals = 0;
+        int mostLikelyAwayGoals = 0;
+
         // set upper bound on goals scored by each team to 10
         for(int homeGoals = 0; homeGoals < 11; homeGoals++) {
             for(int awayGoals = 0; awayGoals < 11; awayGoals++) {
                 double p = Poisson.pmf(homeGoals, muHome) * Poisson.pmf(awayGoals, muAway);
+                if(p > highestProbability) {
+                    highestProbability = p;
+                    mostLikelyHomeGoals = homeGoals;
+                    mostLikelyAwayGoals = awayGoals;
+                }
                 if(homeGoals == awayGoals) {
                     pTie += p;
                 } else if(homeGoals > awayGoals) {
@@ -77,22 +76,29 @@ public class Simulator {
             }
         }
 
-        return new MatchResult(pHome, pTie, pAway);
+        return new MatchResult(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
     }
 
-    private class MatchResult {
+    public class MatchResult {
         final double pHome;
         final double pTie;
         final double pAway;
         final double homePoints;
         final double awayPoints;
 
-        MatchResult(double pHome, double pTie, double pAway) {
+        final double highestProbability;
+        final int mostLikelyHomeGoals;
+        final int mostLikelyAwayGoals;
+
+        MatchResult(double pHome, double pTie, double pAway, double highestProbability, int mostLikelyHomeGoals, int mostLikelyAwayGoals) {
             this.pHome = pHome;
             this.pTie = pTie;
             this.pAway = pAway;
             this.homePoints = 3 * pHome + pTie;
             this.awayPoints = 3 * pAway + pTie;
+            this.highestProbability = highestProbability;
+            this.mostLikelyHomeGoals = mostLikelyHomeGoals;
+            this.mostLikelyAwayGoals = mostLikelyAwayGoals;
         }
     }
 
