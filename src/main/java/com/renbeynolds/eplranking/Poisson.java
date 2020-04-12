@@ -4,7 +4,9 @@ public class Poisson {
 
     // n > 20 will overflow long
     static long factorial(int n) {
-        if (n <= 2) {
+        if (n == 0) {
+            return 1;
+        } else if (n <= 2) {
             return n;
         }
         return n * factorial(n - 1);

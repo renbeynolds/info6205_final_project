@@ -1,12 +1,5 @@
 package com.renbeynolds.eplranking;
 
-import java.util.Map;
-import java.util.Set;
-
-import com.renbeynolds.eplranking.models.LeagueModel;
-import com.renbeynolds.eplranking.models.ModelBuilder;
-import com.renbeynolds.eplranking.models.TeamModel;
-
 public class EPLRanking {
 
     private static Args parseArgs(String[] args) {
@@ -44,26 +37,15 @@ public class EPLRanking {
 
         Args parsedArgs = parseArgs(args);
 
-        Set<MatchInfo> matches = DataLoader.loadData(
+        Simulator simulator = new Simulator(
             parsedArgs.dataDir,
             parsedArgs.firstSeasonStartYear,
             parsedArgs.lastSeasonStartYear
         );
-
-        ModelBuilder builder = new ModelBuilder(matches);
-        builder.build();
-        Map<String,TeamModel> teams = builder.getTeamModels();
-        LeagueModel league = builder.getLeagueModel();
         
-        System.out.println(teams.get("Man City").getAvgAwayScored());
-        System.out.println(teams.get("Bradford").getAvgAwayScored());
-        System.out.println(teams.get("Leicester").getAvgAwayScored());
-
-
-        System.out.println(league.getAvgHomeScored());
-        System.out.println(league.getAvgAwayConceded());
-
-
+        double[] points = simulator.simulateMatch("Man City", "Bradford");
+        System.out.println(points[0]);
+        System.out.println(points[1]);
 
     }
 
