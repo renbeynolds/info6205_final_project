@@ -10,11 +10,11 @@ public class MatchModel {
     private int homeGoals;
     private int awayGoals;
 
-    public MatchModel(String[] data) {
-        homeTeamName = data[2];
-        awayTeamName = data[3];
-        homeGoals = Integer.parseInt(data[4]);
-        awayGoals = Integer.parseInt(data[5]);
+    public MatchModel(String homeTeamName, String awayTeamName, int homeGoals, int awayGoals) {
+        this.homeTeamName = homeTeamName;
+        this.awayTeamName = awayTeamName;
+        this.homeGoals = homeGoals;
+        this.awayGoals = awayGoals;
     }
 
 }

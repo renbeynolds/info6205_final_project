@@ -2,6 +2,8 @@
 
 This application is a ranking system capable of predicting league standings for the English Premier League based on past match outcomes.
 
+Data sets sourced from [football-data.co.uk](http://www.football-data.co.uk/englandm.php).
+
 - [Running Tests](#running-tests)
 - [Building the Application](#building-the-application)
 - [Running the Program](#running-the-program)

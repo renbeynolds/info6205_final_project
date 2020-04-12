@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import com.renbeynolds.eplranking.models.MatchModel;
 
@@ -23,12 +24,28 @@ public class DataLoader {
         String line = "";
         String cvsSplitBy = ",";
         Set<MatchModel> result = new HashSet<MatchModel>();
+
+        int homeTeamNameColumn = 0;
+        int awayTeamNameColumn = 0;
+        int homeGoalsColumn = 0;
+        int awayGoalsColumn = 0;
+
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             int row = 0;
             while ((line = br.readLine()) != null) {
+                String[] data = line.split(cvsSplitBy);
                 if(row > 0) {
-                    String[] data = line.split(cvsSplitBy);
-                    result.add(new MatchModel(data));
+                    result.add(new MatchModel(
+                        data[homeTeamNameColumn],
+                        data[awayTeamNameColumn],
+                        Integer.parseInt(data[homeGoalsColumn]),
+                        Integer.parseInt(data[awayGoalsColumn])
+                    ));
+                } else {
+                    homeTeamNameColumn = find(data, "HomeTeam");
+                    awayTeamNameColumn = find(data, "AwayTeam");
+                    homeGoalsColumn = find(data, "FTHG");
+                    awayGoalsColumn = find(data, "FTAG");
                 }
                 row++;
             }
@@ -36,6 +53,13 @@ public class DataLoader {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static int find(String[] a, String target) {
+        return IntStream.range(0, a.length)
+                        .filter(i -> target.equals(a[i]))
+                        .findFirst()
+                        .orElse(-1);
     }
 
 }
