@@ -36,8 +36,8 @@ public class Simulator {
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
                 if(!homeTeam.equals(awayTeam)) {
                     MatchResult result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
-                    homeTeam.getValue().addPoints(result.homePoints);
-                    awayTeam.getValue().addPoints(result.awayPoints);
+                    homeTeam.getValue().addPoints(result.getHomePoints());
+                    awayTeam.getValue().addPoints(result.getAwayPoints());
                 }
             }
         }
@@ -77,29 +77,6 @@ public class Simulator {
         }
 
         return new MatchResult(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
-    }
-
-    public class MatchResult {
-        final double pHome;
-        final double pTie;
-        final double pAway;
-        final double homePoints;
-        final double awayPoints;
-
-        final double highestProbability;
-        final int mostLikelyHomeGoals;
-        final int mostLikelyAwayGoals;
-
-        MatchResult(double pHome, double pTie, double pAway, double highestProbability, int mostLikelyHomeGoals, int mostLikelyAwayGoals) {
-            this.pHome = pHome;
-            this.pTie = pTie;
-            this.pAway = pAway;
-            this.homePoints = 3 * pHome + pTie;
-            this.awayPoints = 3 * pAway + pTie;
-            this.highestProbability = highestProbability;
-            this.mostLikelyHomeGoals = mostLikelyHomeGoals;
-            this.mostLikelyAwayGoals = mostLikelyAwayGoals;
-        }
     }
 
 }

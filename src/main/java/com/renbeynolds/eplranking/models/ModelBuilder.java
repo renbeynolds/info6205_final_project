@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.Getter;
+
+@Getter
 public class ModelBuilder {
 
     private LeagueModel leagueModel;
@@ -34,11 +37,4 @@ public class ModelBuilder {
         }  
     }
 
-    public Map<String,TeamModel> getTeamModels() {
-        return teamModels;
-    }
-
-    public LeagueModel getLeagueModel() {
-        return leagueModel;        
-    }
 }

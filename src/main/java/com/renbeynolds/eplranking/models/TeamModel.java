@@ -1,5 +1,8 @@
 package com.renbeynolds.eplranking.models;
 
+import lombok.Getter;
+
+@Getter
 public class TeamModel implements Comparable<TeamModel> {
 
     public TeamModel(String name) {
@@ -32,10 +35,6 @@ public class TeamModel implements Comparable<TeamModel> {
         this.numAwayGames += 1;
         this.totalAwayScored += match.getAwayGoals();
         this.totalAwayConceded += match.getHomeGoals();
-    }
-
-    public String getName() {
-        return name;
     }
 
     public double getAvgHomeScored() {
@@ -79,14 +78,6 @@ public class TeamModel implements Comparable<TeamModel> {
 
     public void addPoints(double additionalPoints) {
         this.points += additionalPoints;
-    }
-
-    public void setPoints(double points) {
-        this.points = points;
-    }
-
-    public double getPoints() {
-        return this.points;
     }
 
     // used to rank teams by points

@@ -8,7 +8,7 @@ import com.renbeynolds.eplranking.models.TeamModel;
 
 import picocli.CommandLine.Command;
 
-@Command(name = "rank", description = "display a table ranking all teams")
+@Command(name = "rank", description = "show table ranking all teams")
 public class Rank extends BaseCommand {
 
     @Override

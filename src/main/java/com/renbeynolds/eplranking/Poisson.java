@@ -2,7 +2,8 @@ package com.renbeynolds.eplranking;
 
 public class Poisson {
 
-    // n > 20 will overflow long
+    // n > 20 will overflow long but
+    // we only consider max score of 10
     static long factorial(int n) {
         if (n == 0) {
             return 1;

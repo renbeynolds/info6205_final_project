@@ -1,5 +1,8 @@
 package com.renbeynolds.eplranking.models;
 
+import lombok.Getter;
+
+@Getter
 public class MatchModel {
 
     private String homeTeamName;
@@ -13,10 +16,5 @@ public class MatchModel {
         homeGoals = Integer.parseInt(data[4]);
         awayGoals = Integer.parseInt(data[5]);
     }
-
-    public String getHomeTeamName() { return this.homeTeamName; }
-    public String getAwayTeamName() { return this.awayTeamName; }
-    public int getHomeGoals() { return this.homeGoals; }
-    public int getAwayGoals() { return this.awayGoals; }
 
 }

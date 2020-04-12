@@ -1,5 +1,6 @@
 package com.renbeynolds.eplranking;
 
+import com.renbeynolds.eplranking.cli.Compete;
 import com.renbeynolds.eplranking.cli.Rank;
 
 import picocli.CommandLine;
@@ -13,7 +14,7 @@ import picocli.CommandLine.Spec;
     mixinStandardHelpOptions = true,
     synopsisSubcommandLabel = "COMMAND",
     version = "1.0.0",
-    subcommands = {Rank.class}
+    subcommands = {Rank.class, Compete.class}
 )
 class EPL implements Runnable {
 
