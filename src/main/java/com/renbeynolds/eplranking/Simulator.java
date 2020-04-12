@@ -44,11 +44,13 @@ public class Simulator {
     }
 
     private void printRankingTable() {
+        System.out.println();
         List<TeamModel> teamList = new ArrayList<TeamModel>(teamModels.values());
         Collections.sort(teamList, Collections.reverseOrder());
         for (int i = 0; i < teamList.size(); i ++) {
             System.out.println(String.format("%d - %s - %.2f", i+1, teamList.get(i).getName(), teamList.get(i).getPoints()));
         }
+        System.out.println();
     }
 
     private MatchResult simulateMatch(String homeTeamName, String awayTeamName) {

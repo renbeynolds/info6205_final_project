@@ -1,34 +1,28 @@
-apply plugin: 'java'
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
 
 repositories {
     mavenCentral()
 }
 
 jar {
-    baseName 'eplranking'
-    version '0.0.0'
     manifest {
         attributes 'Main-Class': 'com.renbeynolds.eplranking.EPLRanking'
     }
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main'
-        }
-    }
-
-    test {
-        java {
-            srcDir 'src/test'
-        }
-    }
+shadowJar {
+   baseName = 'eplranking'
+   archiveVersion = ''
+   classifier = ''
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
+    implementation 'commons-cli:commons-cli:1.4'
     testCompile 'junit:junit:4.12'
 }

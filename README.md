@@ -9,10 +9,16 @@ This application is a ranking system capable of predicting league standings for 
 
 ## Building the Application
 ```
-./gradlew assemble
+./gradlew shadowjar
 ```
 
 ## Running the Program
+
+### Show Rankings Based on Historic Data
 ```bash
-java -jar build/libs/eplranking-0.0.0.jar ./datasets/ 2000 2003
+java -jar build/libs/eplranking.jar \
+    -dataDir ./datasets \
+    -firstSeasonStartYear 2008 \
+    -lastSeasonStartYear 2010 \
+    -rank
 ```
