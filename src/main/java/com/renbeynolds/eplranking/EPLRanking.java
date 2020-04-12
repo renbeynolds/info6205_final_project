@@ -3,6 +3,10 @@ package com.renbeynolds.eplranking;
 import java.util.Map;
 import java.util.Set;
 
+import com.renbeynolds.eplranking.models.LeagueModel;
+import com.renbeynolds.eplranking.models.ModelBuilder;
+import com.renbeynolds.eplranking.models.TeamModel;
+
 public class EPLRanking {
 
     private static Args parseArgs(String[] args) {
@@ -54,6 +58,10 @@ public class EPLRanking {
         System.out.println(teams.get("Man City").getAvgAwayScored());
         System.out.println(teams.get("Bradford").getAvgAwayScored());
         System.out.println(teams.get("Leicester").getAvgAwayScored());
+
+
+        System.out.println(league.getAvgHomeScored());
+        System.out.println(league.getAvgAwayConceded());
 
 
 

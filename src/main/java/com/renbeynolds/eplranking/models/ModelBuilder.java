@@ -1,8 +1,10 @@
-package com.renbeynolds.eplranking;
+package com.renbeynolds.eplranking.models;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import com.renbeynolds.eplranking.MatchInfo;
 
 public class ModelBuilder {
 
