@@ -1,6 +1,12 @@
 package com.renbeynolds.eplranking.models;
 
-public class TeamModel {
+public class TeamModel implements Comparable<TeamModel> {
+
+    public TeamModel(String name) {
+        this.name = name;
+    }
+
+    private final String name;
 
     private int numHomeGames = 0;
     private int numAwayGames = 0;
@@ -14,6 +20,8 @@ public class TeamModel {
     private double awayAttackStrength;
     private double awayDefenseStrength;
 
+    private double points = 0;
+
     public void addHomeMatch(MatchModel match) {
         this.numHomeGames += 1;
         this.totalHomeScored += match.getHomeGoals();
@@ -24,6 +32,10 @@ public class TeamModel {
         this.numAwayGames += 1;
         this.totalAwayScored += match.getAwayGoals();
         this.totalAwayConceded += match.getHomeGoals();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public double getAvgHomeScored() {
@@ -64,5 +76,28 @@ public class TeamModel {
         this.awayAttackStrength = getAvgAwayScored() / league.getAvgAwayScored();
         this.awayDefenseStrength = getAvgAwayConceded() / league.getAvgAwayConceded();
     }
+
+    public void addPoints(double additionalPoints) {
+        this.points += additionalPoints;
+    }
+
+    public void setPoints(double points) {
+        this.points = points;
+    }
+
+    public double getPoints() {
+        return this.points;
+    }
+
+    // used to rank teams by points
+    public int compareTo(TeamModel other) { 
+        if(this.points > other.points) {
+            return 1;
+        } else if (this.points == other.points) {
+            return 0;
+        } else {
+            return -1;
+        }
+    } 
 
 }

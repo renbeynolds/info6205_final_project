@@ -43,9 +43,7 @@ public class EPLRanking {
             parsedArgs.lastSeasonStartYear
         );
         
-        double[] points = simulator.simulateMatch("Man City", "Bradford");
-        System.out.println(points[0]);
-        System.out.println(points[1]);
+        simulator.getRankings();
 
     }
 
