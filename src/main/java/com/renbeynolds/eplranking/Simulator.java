@@ -1,5 +1,6 @@
 package com.renbeynolds.eplranking;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,15 +9,15 @@ import com.renbeynolds.eplranking.models.MatchModel;
 import com.renbeynolds.eplranking.models.ModelBuilder;
 import com.renbeynolds.eplranking.models.TeamModel;
 
+import lombok.Getter;
+
+@Getter
 public class Simulator {
 
     private final Set<MatchModel> matchModels;
     private final Map<String,TeamModel> teamModels;
     private final LeagueModel leagueModel;
-
-    public Map<String,TeamModel> getTeamModels() {
-        return this.teamModels;
-    }
+    private Map<String, Map<String, MatchResult>> matchResults = new HashMap<String, Map<String,MatchResult>>(); 
 
     public Simulator(String dataDir, int firstSeasonStartYear, int lastSeasonStartYear) {
         this.matchModels = DataLoader.loadData(
@@ -30,16 +31,19 @@ public class Simulator {
         this.leagueModel = builder.getLeagueModel();
     }
 
-    public void rank() {
+    public void simulateSeason() {
         // each team plays each other team twice, once at home and once away
         for (Map.Entry<String,TeamModel> homeTeam : teamModels.entrySet()) {
+            Map<String,MatchResult> teamResults = new HashMap<String, MatchResult>();
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
                 if(!homeTeam.equals(awayTeam)) {
                     MatchResult result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
                     homeTeam.getValue().addPoints(result.getHomePoints());
                     awayTeam.getValue().addPoints(result.getAwayPoints());
+                    teamResults.put(awayTeam.getKey(), result);
                 }
             }
+            matchResults.put(homeTeam.getKey(), teamResults);
         }
     }
 

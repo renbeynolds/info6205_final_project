@@ -2,6 +2,7 @@ package com.renbeynolds.eplranking.cli;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.renbeynolds.eplranking.models.TeamModel;
@@ -14,16 +15,28 @@ public class Rank extends BaseCommand {
     @Override
     public void run() {
         super.run();
-        simulator.rank();
-        printRankingTable();
+        simulator.simulateSeason();
+        printRankings();
     }
 
-    private void printRankingTable() {
-        System.out.println("Rank  Team Name          Expected Points");
+    private void printRankings() {
+        System.out.println("Rank,Team Name,Expected Points");
         List<TeamModel> teamList = new ArrayList<TeamModel>(simulator.getTeamModels().values());
-        Collections.sort(teamList, Collections.reverseOrder());
+
+        Comparator<TeamModel> compareByPointsReverse = (TeamModel t1, TeamModel t2) -> {
+            if(t1.getPoints() > t2.getPoints()) {
+                return -1;
+            } else if (t1.getPoints() == t2.getPoints()) {
+                return 0;
+            } else {
+                return 1;
+            }
+        };
+
+        Collections.sort(teamList, compareByPointsReverse);
+
         for (int i = 0; i < teamList.size(); i ++) {
-            System.out.println(String.format("%-4d  %-17s  %.2f", i+1, teamList.get(i).getName(), teamList.get(i).getPoints()));
+            System.out.println(String.format("%d,%s,%.2f", i+1, teamList.get(i).getName(), teamList.get(i).getPoints()));
         }
     }
 

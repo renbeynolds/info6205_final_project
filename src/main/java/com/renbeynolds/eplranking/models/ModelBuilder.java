@@ -1,8 +1,8 @@
 package com.renbeynolds.eplranking.models;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ public class ModelBuilder {
 
     public ModelBuilder(Set<MatchModel> matchModels) {
         this.leagueModel = new LeagueModel();
-        this.teamModels = new HashMap<String,TeamModel>();
+        this.teamModels = new TreeMap<String,TeamModel>();
         this.matchModels = matchModels;
         matchModels.forEach((MatchModel match) -> {
             this.teamModels.putIfAbsent(match.getHomeTeamName(), new TeamModel(match.getHomeTeamName()));

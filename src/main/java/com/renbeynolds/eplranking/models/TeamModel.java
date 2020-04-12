@@ -82,13 +82,7 @@ public class TeamModel implements Comparable<TeamModel> {
 
     // used to rank teams by points
     public int compareTo(TeamModel other) { 
-        if(this.points > other.points) {
-            return 1;
-        } else if (this.points == other.points) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return this.name.compareTo(other.name);
     } 
 
 }

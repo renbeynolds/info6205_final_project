@@ -10,6 +10,7 @@ Data sets sourced from [football-data.co.uk](http://www.football-data.co.uk/engl
     - [Command Line Help](#command-line-help)
     - [Team Rankings Based on Historic Data](#team-rankings-based-on-historic-data)
     - [Expected Outcome of Single Match](#expected-outcome-of-single-match)
+    - [Season Result Table](#season-result-table)
 
 ## Running Tests
 ```
@@ -33,7 +34,7 @@ java -jar build/libs/eplranking.jar --help
 
 #### Team Rankings Based on Historic Data
 
-Produces a ranked table of teams based on the expected number of points achieved in a tournament of all teams present in the input data set.
+Produces a CSV formatted ranking of teams based on the expected number of points achieved in a tournament of all teams present in the input data set.
 
 ```bash
 java -jar build/libs/eplranking.jar \
@@ -55,4 +56,16 @@ java -jar build/libs/eplranking.jar \
     -l 2018 \
     -h "Man City" \
     -a "Liverpool"
+```
+
+#### Season Result Table
+
+Produces a CSV formatted result table of the highest probability outcomes for each match in a tournament of all teams present in the input data set.
+
+```bash
+java -jar build/libs/eplranking.jar \
+    table \
+    -d ./datasets \
+    -f 2000 \
+    -l 2018
 ```
