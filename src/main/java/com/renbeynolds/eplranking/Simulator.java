@@ -32,12 +32,7 @@ public class Simulator {
             Map<String,MatchModel> teamResults = new HashMap<String, MatchModel>();
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
                 if(!homeTeam.equals(awayTeam)) {
-                    MatchModel result;
-                    if(haveRealMatchData(partialSeasonMatchData, homeTeam.getKey(), awayTeam.getKey())) {
-                        result = new MatchModel(partialSeasonMatchData.get(homeTeam.getKey()).get(awayTeam.getKey()));
-                    } else {
-                        result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
-                    }
+                    MatchModel result= simulateMatch(homeTeam.getKey(), awayTeam.getKey());
                     homeTeam.getValue().addPoints(result.getHomePoints());
                     awayTeam.getValue().addPoints(result.getAwayPoints());
                     teamResults.put(awayTeam.getKey(), result);
@@ -49,39 +44,27 @@ public class Simulator {
     }
 
     public MatchModel simulateMatch(String homeTeamName, String awayTeamName) {
+        
+        if(haveRealMatchData(partialSeasonMatchData, homeTeamName, awayTeamName)) {
+            return new MatchModel(partialSeasonMatchData.get(homeTeamName).get(awayTeamName));
+        }
+
         double muHome = teamModels.get(homeTeamName).getHomeAttackStrength() *
                 teamModels.get(awayTeamName).getAwayDefenseStrength() * leagueModel.getAvgHomeScored();
         double muAway = teamModels.get(awayTeamName).getAwayAttackStrength() *
                 teamModels.get(homeTeamName).getHomeDefenseStrength() * leagueModel.getAvgAwayScored();
 
-        double pHome = 0;
-        double pTie = 0;
-        double pAway = 0;
-
-        double highestProbability = 0;
-        int mostLikelyHomeGoals = 0;
-        int mostLikelyAwayGoals = 0;
+        MatchModel matchModel = new MatchModel();
 
         // set upper bound on goals scored by each team to 10
         for(int homeGoals = 0; homeGoals < 11; homeGoals++) {
             for(int awayGoals = 0; awayGoals < 11; awayGoals++) {
                 double p = Poisson.pmf(homeGoals, muHome) * Poisson.pmf(awayGoals, muAway);
-                if(p > highestProbability) {
-                    highestProbability = p;
-                    mostLikelyHomeGoals = homeGoals;
-                    mostLikelyAwayGoals = awayGoals;
-                }
-                if(homeGoals == awayGoals) {
-                    pTie += p;
-                } else if(homeGoals > awayGoals) {
-                    pHome += p;
-                } else {
-                    pAway += p;
-                }
+                matchModel.addScore(homeGoals, awayGoals, p);
             }
         }
 
-        return new MatchModel(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
+        return matchModel;
     }
 
     public void buildModels() {

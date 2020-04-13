@@ -34,7 +34,7 @@ java -jar build/libs/eplranking.jar --help
 
 #### Team Rankings Based on Historic Data
 
-Produces a CSV formatted ranking of teams based on the expected number of points achieved in a tournament of all teams present in the input data set.
+Produces a CSV table of team ranks based on the expected number of points achieved in a tournament of all teams present in the input data set.
 
 Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
 
@@ -48,7 +48,9 @@ java -jar build/libs/eplranking.jar \
 
 #### Expected Outcome of Single Match
 
-Displays detailed information on the expected outcome of a head to head match between two teams.
+Displays a CSV table of match scorelines and their probability of occuring.
+
+Adding the `-s, --summary` flag will produce a brief summary out expected results instead of a full CSV table of probabilities.
 
 ```bash
 java -jar build/libs/eplranking.jar \
@@ -62,7 +64,7 @@ java -jar build/libs/eplranking.jar \
 
 #### Season Result Table
 
-Produces a CSV formatted result table of the highest probability outcomes for each match in a tournament of all teams present in the input data set.
+Produces a CSV table of the highest probability outcomes for each match in a tournament of all teams present in the input data set.
 
 Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
 

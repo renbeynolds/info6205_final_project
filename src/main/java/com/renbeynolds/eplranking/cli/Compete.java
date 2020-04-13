@@ -14,15 +14,31 @@ public class Compete extends BaseCommand {
     @Option(names = {"-a", "--awayTeamName"}, required = true, description = "name of away team")
     String awayTeamName;
 
+    @Option(names = {"-s", "--summary"}, description = "print summary instead of CSV table of all outcomes")
+    boolean summary;
+
     @Override
     public void run() {
         super.run();
         simulator.buildModels();
         MatchModel result = simulator.simulateMatch(homeTeamName, awayTeamName);
-        printMatchModel(result);
+        if(summary) {
+            printSummary(result);
+        } else {
+            printProbabilityTable(result);
+        }
     }
 
-    private void printMatchModel(MatchModel result) {
+    private void printProbabilityTable(MatchModel result) {
+        System.out.println(String.format("%s Goals, %s Goals, Probability", homeTeamName, awayTeamName));
+        for(int homeGoals = 0; homeGoals < 11; homeGoals++) {
+            for(int awayGoals = 0; awayGoals < 11; awayGoals++) {
+                System.out.println(String.format("%d, %d, %.4f", homeGoals, awayGoals, result.getProbability(homeGoals, awayGoals)));
+            }
+        }
+    }
+
+    private void printSummary(MatchModel result) {
         System.out.println(String.format("Home: %-15s Away: %s\n", homeTeamName, awayTeamName));
         System.out.println(String.format("Probability of home win: %.4f", result.getPHome()));
         System.out.println(String.format("Probability of tie     : %.4f", result.getPTie()));
