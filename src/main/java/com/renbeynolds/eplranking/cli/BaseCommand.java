@@ -22,7 +22,7 @@ public class BaseCommand implements Runnable {
     protected Simulator simulator;
 
     public void run() {
-        Set<MatchModel> matchModels = DataLoader.loadData(
+        Set<MatchModel> matchModels = DataLoader.loadHistoricData(
             dataDir,
             firstSeasonStartYear,
             lastSeasonStartYear

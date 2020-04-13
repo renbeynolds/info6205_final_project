@@ -5,16 +5,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.renbeynolds.eplranking.DataLoader;
 import com.renbeynolds.eplranking.models.TeamModel;
 
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 @Command(name = "rank", description = "show table ranking all teams")
 public class Rank extends BaseCommand {
 
+    @Option(names = {"-p", "--partialSeason"}, description = "csv file containing partial season results to complete")
+    String partialSeason;
+
     @Override
     public void run() {
         super.run();
+        if(partialSeason != null) {
+            simulator.setPartialSeasonMatches(DataLoader.loadPartialSeason(partialSeason));
+        }
         simulator.simulateSeason();
         printRankings();
     }

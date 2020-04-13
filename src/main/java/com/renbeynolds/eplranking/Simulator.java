@@ -10,10 +10,13 @@ import com.renbeynolds.eplranking.models.ModelBuilder;
 import com.renbeynolds.eplranking.models.TeamModel;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Simulator {
 
+    @Setter
+    private Map<String, Map<String, MatchModel>> partialSeasonMatches;
     private final Map<String,TeamModel> teamModels;
     private final LeagueModel leagueModel;
 
