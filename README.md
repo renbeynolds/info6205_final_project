@@ -5,8 +5,8 @@ This application is a ranking system capable of predicting league standings for 
 Data sets sourced from [football-data.co.uk](http://www.football-data.co.uk/englandm.php).
 
 - [Running Tests](#running-tests)
-- [Building the Application](#building-the-application)
-- [Running the Program](#running-the-program)
+- [Building the CLI](#building-the-cli)
+- [Running the CLI](#running-the-cli)
     - [Command Line Help](#command-line-help)
     - [Team Rankings Based on Historic Data](#team-rankings-based-on-historic-data)
     - [Expected Outcome of Single Match](#expected-outcome-of-single-match)
@@ -17,12 +17,12 @@ Data sets sourced from [football-data.co.uk](http://www.football-data.co.uk/engl
 ./gradlew test
 ```
 
-## Building the Application
+## Building the CLI
 ```
 ./gradlew shadowjar
 ```
 
-## Running the Program
+## Running the CLI
 
 #### Command Line Help
 
@@ -50,7 +50,7 @@ java -jar build/libs/eplranking.jar \
 
 Displays a CSV table of match scorelines and their probability of occuring.
 
-Adding the `-s, --summary` flag will produce a brief summary out expected results instead of a full CSV table of probabilities.
+Adding the `-s, --summary` flag will produce a brief summary of expected results instead of a full CSV table of probabilities.
 
 ```bash
 java -jar build/libs/eplranking.jar \
