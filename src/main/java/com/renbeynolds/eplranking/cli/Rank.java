@@ -21,8 +21,9 @@ public class Rank extends BaseCommand {
     public void run() {
         super.run();
         if(partialSeason != null) {
-            simulator.setPartialSeasonMatches(DataLoader.loadPartialSeason(partialSeason));
+            simulator.setPartialSeasonMatchData(DataLoader.loadPartialSeason(partialSeason));
         }
+        simulator.buildModels();
         simulator.simulateSeason();
         printRankings();
     }

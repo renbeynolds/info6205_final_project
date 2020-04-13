@@ -22,12 +22,12 @@ public class BaseCommand implements Runnable {
     protected Simulator simulator;
 
     public void run() {
-        Set<MatchData> MatchDatas = DataLoader.loadHistoricData(
+        Set<MatchData> matches = DataLoader.loadHistoricData(
             dataDir,
             firstSeasonStartYear,
             lastSeasonStartYear
         );
-        this.simulator = new Simulator(MatchDatas);
+        this.simulator = new Simulator(matches);
     }
     
 }

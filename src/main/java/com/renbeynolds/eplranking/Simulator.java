@@ -3,10 +3,10 @@ package com.renbeynolds.eplranking;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.renbeynolds.eplranking.models.LeagueModel;
 import com.renbeynolds.eplranking.models.MatchModel;
-import com.renbeynolds.eplranking.models.ModelBuilder;
 import com.renbeynolds.eplranking.models.TeamModel;
 
 import lombok.Getter;
@@ -16,33 +16,36 @@ import lombok.Setter;
 public class Simulator {
 
     @Setter
-    private Map<String, Map<String, MatchData>> partialSeasonMatches;
-    private final Map<String,TeamModel> teamModels;
-    private final LeagueModel leagueModel;
+    private Map<String, Map<String, MatchData>> partialSeasonMatchData;
+    private Set<MatchData> historicMatchData;
+    private Map<String,TeamModel> teamModels;
+    private LeagueModel leagueModel;
 
-    public Simulator(Set<MatchData> MatchDatas) {
-        ModelBuilder builder = new ModelBuilder(MatchDatas);
-        builder.build();
-        this.teamModels = builder.getTeamModels();
-        this.leagueModel = builder.getLeagueModel();
+    public Simulator(Set<MatchData> historicMatchData) {
+        this.historicMatchData = historicMatchData;
     }
 
     public Map<String, Map<String, MatchModel>> simulateSeason() {
-        Map<String, Map<String, MatchModel>> MatchModels = new HashMap<String, Map<String,MatchModel>>(); 
+        Map<String, Map<String, MatchModel>> matchModels = new HashMap<String, Map<String,MatchModel>>(); 
         // each team plays each other team twice, once at home and once away
         for (Map.Entry<String,TeamModel> homeTeam : teamModels.entrySet()) {
             Map<String,MatchModel> teamResults = new HashMap<String, MatchModel>();
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
                 if(!homeTeam.equals(awayTeam)) {
-                    MatchModel result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
+                    MatchModel result;
+                    if(haveRealMatchData(partialSeasonMatchData, homeTeam.getKey(), awayTeam.getKey())) {
+                        result = new MatchModel(partialSeasonMatchData.get(homeTeam.getKey()).get(awayTeam.getKey()));
+                    } else {
+                        result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
+                    }
                     homeTeam.getValue().addPoints(result.getHomePoints());
                     awayTeam.getValue().addPoints(result.getAwayPoints());
                     teamResults.put(awayTeam.getKey(), result);
                 }
             }
-            MatchModels.put(homeTeam.getKey(), teamResults);
+            matchModels.put(homeTeam.getKey(), teamResults);
         }
-        return MatchModels;
+        return matchModels;
     }
 
     public MatchModel simulateMatch(String homeTeamName, String awayTeamName) {
@@ -79,6 +82,35 @@ public class Simulator {
         }
 
         return new MatchModel(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
+    }
+
+    public void buildModels() {
+        this.leagueModel = new LeagueModel();
+        this.teamModels = new TreeMap<String,TeamModel>();
+
+        // perform initial counts for home and away scores
+        historicMatchData.forEach((MatchData match) -> {
+            leagueModel.addMatch(match);
+
+            if(this.partialSeasonMatchData == null || this.partialSeasonMatchData.containsKey(match.getHomeTeamName())) {
+                this.teamModels.putIfAbsent(match.getHomeTeamName(), new TeamModel(match.getHomeTeamName()));
+                teamModels.get(match.getHomeTeamName()).addHomeMatch(match);
+            }
+
+            if(this.partialSeasonMatchData == null || this.partialSeasonMatchData.containsKey(match.getAwayTeamName())) {
+                this.teamModels.putIfAbsent(match.getAwayTeamName(), new TeamModel(match.getAwayTeamName()));
+                teamModels.get(match.getAwayTeamName()).addAwayMatch(match);
+            }
+        });
+
+        // normalize team models based on overall league data
+        for (Map.Entry<String,TeamModel> team : teamModels.entrySet()) {
+            team.getValue().normalize(leagueModel);
+        }  
+    }
+
+    private boolean haveRealMatchData(Map<String, Map<String, MatchData>> map, String key1, String key2) {
+        return map != null && map.containsKey(key1) && map.get(key1).containsKey(key2);
     }
 
 }

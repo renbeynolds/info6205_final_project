@@ -36,6 +36,8 @@ java -jar build/libs/eplranking.jar --help
 
 Produces a CSV formatted ranking of teams based on the expected number of points achieved in a tournament of all teams present in the input data set.
 
+Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
+
 ```bash
 java -jar build/libs/eplranking.jar \
     rank \
@@ -61,6 +63,8 @@ java -jar build/libs/eplranking.jar \
 #### Season Result Table
 
 Produces a CSV formatted result table of the highest probability outcomes for each match in a tournament of all teams present in the input data set.
+
+Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
 
 ```bash
 java -jar build/libs/eplranking.jar \

@@ -17,6 +17,7 @@ public class Compete extends BaseCommand {
     @Override
     public void run() {
         super.run();
+        simulator.buildModels();
         MatchModel result = simulator.simulateMatch(homeTeamName, awayTeamName);
         printMatchModel(result);
     }

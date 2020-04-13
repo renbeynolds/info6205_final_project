@@ -1,5 +1,7 @@
 package com.renbeynolds.eplranking.models;
 
+import com.renbeynolds.eplranking.MatchData;
+
 import lombok.Getter;
 
 @Getter
@@ -24,6 +26,17 @@ public class MatchModel {
         this.highestProbability = highestProbability;
         this.mostLikelyHomeGoals = mostLikelyHomeGoals;
         this.mostLikelyAwayGoals = mostLikelyAwayGoals;
+    }
+
+    public MatchModel(MatchData matchData) {
+        this(
+            matchData.getHomeGoals() > matchData.getAwayGoals() ? 1.0 : 0.0,
+            matchData.getHomeGoals() == matchData.getAwayGoals() ? 1.0 : 0.0,
+            matchData.getHomeGoals() < matchData.getAwayGoals() ? 1.0 : 0.0,
+            1.0,
+            matchData.getHomeGoals(),
+            matchData.getAwayGoals()
+        );
     }
 
 }
