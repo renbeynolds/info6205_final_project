@@ -1,5 +1,7 @@
 package com.renbeynolds.eplranking.models;
 
+import com.renbeynolds.eplranking.MatchData;
+
 public class LeagueModel {
 
     private int numGames = 0;
@@ -8,7 +10,7 @@ public class LeagueModel {
     private double totalAwayScored = 0;
     private double totalAwayConceded = 0;
 
-    public void addMatch(MatchModel match) {
+    public void addMatch(MatchData match) {
         this.numGames += 1;
         this.totalHomeScored += match.getHomeGoals();
         this.totalHomeConceded += match.getAwayGoals();

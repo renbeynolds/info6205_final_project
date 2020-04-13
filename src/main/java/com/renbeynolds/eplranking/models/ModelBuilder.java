@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.renbeynolds.eplranking.MatchData;
+
 import lombok.Getter;
 
 @Getter
@@ -11,13 +13,13 @@ public class ModelBuilder {
 
     private LeagueModel leagueModel;
     private Map<String,TeamModel> teamModels;
-    private Set<MatchModel> matchModels;
+    private Set<MatchData> MatchDatas;
 
-    public ModelBuilder(Set<MatchModel> matchModels) {
+    public ModelBuilder(Set<MatchData> MatchDatas) {
         this.leagueModel = new LeagueModel();
         this.teamModels = new TreeMap<String,TeamModel>();
-        this.matchModels = matchModels;
-        matchModels.forEach((MatchModel match) -> {
+        this.MatchDatas = MatchDatas;
+        MatchDatas.forEach((MatchData match) -> {
             this.teamModels.putIfAbsent(match.getHomeTeamName(), new TeamModel(match.getHomeTeamName()));
             this.teamModels.putIfAbsent(match.getAwayTeamName(), new TeamModel(match.getAwayTeamName()));
         });
@@ -25,7 +27,7 @@ public class ModelBuilder {
 
     public void build() {
         // Perform inital counts for home and away scores
-        for(MatchModel match : matchModels) {
+        for(MatchData match : MatchDatas) {
             leagueModel.addMatch(match);
             teamModels.get(match.getHomeTeamName()).addHomeMatch(match);
             teamModels.get(match.getAwayTeamName()).addAwayMatch(match);

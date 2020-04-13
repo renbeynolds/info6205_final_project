@@ -3,8 +3,8 @@ package com.renbeynolds.eplranking.cli;
 import java.util.Set;
 
 import com.renbeynolds.eplranking.DataLoader;
+import com.renbeynolds.eplranking.MatchData;
 import com.renbeynolds.eplranking.Simulator;
-import com.renbeynolds.eplranking.models.MatchModel;
 
 import picocli.CommandLine.Option;
 
@@ -22,12 +22,12 @@ public class BaseCommand implements Runnable {
     protected Simulator simulator;
 
     public void run() {
-        Set<MatchModel> matchModels = DataLoader.loadHistoricData(
+        Set<MatchData> MatchDatas = DataLoader.loadHistoricData(
             dataDir,
             firstSeasonStartYear,
             lastSeasonStartYear
         );
-        this.simulator = new Simulator(matchModels);
+        this.simulator = new Simulator(MatchDatas);
     }
     
 }

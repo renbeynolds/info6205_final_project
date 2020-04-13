@@ -16,36 +16,36 @@ import lombok.Setter;
 public class Simulator {
 
     @Setter
-    private Map<String, Map<String, MatchModel>> partialSeasonMatches;
+    private Map<String, Map<String, MatchData>> partialSeasonMatches;
     private final Map<String,TeamModel> teamModels;
     private final LeagueModel leagueModel;
 
-    public Simulator(Set<MatchModel> matchModels) {
-        ModelBuilder builder = new ModelBuilder(matchModels);
+    public Simulator(Set<MatchData> MatchDatas) {
+        ModelBuilder builder = new ModelBuilder(MatchDatas);
         builder.build();
         this.teamModels = builder.getTeamModels();
         this.leagueModel = builder.getLeagueModel();
     }
 
-    public Map<String, Map<String, MatchResult>> simulateSeason() {
-        Map<String, Map<String, MatchResult>> matchResults = new HashMap<String, Map<String,MatchResult>>(); 
+    public Map<String, Map<String, MatchModel>> simulateSeason() {
+        Map<String, Map<String, MatchModel>> MatchModels = new HashMap<String, Map<String,MatchModel>>(); 
         // each team plays each other team twice, once at home and once away
         for (Map.Entry<String,TeamModel> homeTeam : teamModels.entrySet()) {
-            Map<String,MatchResult> teamResults = new HashMap<String, MatchResult>();
+            Map<String,MatchModel> teamResults = new HashMap<String, MatchModel>();
             for (Map.Entry<String,TeamModel> awayTeam : teamModels.entrySet()) {
                 if(!homeTeam.equals(awayTeam)) {
-                    MatchResult result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
+                    MatchModel result = simulateMatch(homeTeam.getKey(), awayTeam.getKey());
                     homeTeam.getValue().addPoints(result.getHomePoints());
                     awayTeam.getValue().addPoints(result.getAwayPoints());
                     teamResults.put(awayTeam.getKey(), result);
                 }
             }
-            matchResults.put(homeTeam.getKey(), teamResults);
+            MatchModels.put(homeTeam.getKey(), teamResults);
         }
-        return matchResults;
+        return MatchModels;
     }
 
-    public MatchResult simulateMatch(String homeTeamName, String awayTeamName) {
+    public MatchModel simulateMatch(String homeTeamName, String awayTeamName) {
         double muHome = teamModels.get(homeTeamName).getHomeAttackStrength() *
                 teamModels.get(awayTeamName).getAwayDefenseStrength() * leagueModel.getAvgHomeScored();
         double muAway = teamModels.get(awayTeamName).getAwayAttackStrength() *
@@ -78,7 +78,7 @@ public class Simulator {
             }
         }
 
-        return new MatchResult(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
+        return new MatchModel(pHome, pTie, pAway, highestProbability, mostLikelyHomeGoals, mostLikelyAwayGoals);
     }
 
 }

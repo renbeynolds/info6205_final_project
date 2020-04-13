@@ -5,16 +5,25 @@ import lombok.Getter;
 @Getter
 public class MatchModel {
 
-    private String homeTeamName;
-    private String awayTeamName;
-    private int homeGoals;
-    private int awayGoals;
+    private final double pHome;
+    private final double pTie;
+    private final double pAway;
+    private final double homePoints;
+    private final double awayPoints;
 
-    public MatchModel(String homeTeamName, String awayTeamName, int homeGoals, int awayGoals) {
-        this.homeTeamName = homeTeamName;
-        this.awayTeamName = awayTeamName;
-        this.homeGoals = homeGoals;
-        this.awayGoals = awayGoals;
+    private final double highestProbability;
+    private final int mostLikelyHomeGoals;
+    private final int mostLikelyAwayGoals;
+
+    public MatchModel(double pHome, double pTie, double pAway, double highestProbability, int mostLikelyHomeGoals, int mostLikelyAwayGoals) {
+        this.pHome = pHome;
+        this.pTie = pTie;
+        this.pAway = pAway;
+        this.homePoints = 3 * pHome + pTie;
+        this.awayPoints = 3 * pAway + pTie;
+        this.highestProbability = highestProbability;
+        this.mostLikelyHomeGoals = mostLikelyHomeGoals;
+        this.mostLikelyAwayGoals = mostLikelyAwayGoals;
     }
 
 }

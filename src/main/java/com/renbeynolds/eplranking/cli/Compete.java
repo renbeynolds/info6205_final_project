@@ -1,6 +1,6 @@
 package com.renbeynolds.eplranking.cli;
 
-import com.renbeynolds.eplranking.MatchResult;
+import com.renbeynolds.eplranking.models.MatchModel;
 
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -17,11 +17,11 @@ public class Compete extends BaseCommand {
     @Override
     public void run() {
         super.run();
-        MatchResult result = simulator.simulateMatch(homeTeamName, awayTeamName);
-        printMatchResult(result);
+        MatchModel result = simulator.simulateMatch(homeTeamName, awayTeamName);
+        printMatchModel(result);
     }
 
-    private void printMatchResult(MatchResult result) {
+    private void printMatchModel(MatchModel result) {
         System.out.println(String.format("Home: %-15s Away: %s\n", homeTeamName, awayTeamName));
         System.out.println(String.format("Probability of home win: %.4f", result.getPHome()));
         System.out.println(String.format("Probability of tie     : %.4f", result.getPTie()));

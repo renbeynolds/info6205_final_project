@@ -1,5 +1,7 @@
 package com.renbeynolds.eplranking.models;
 
+import com.renbeynolds.eplranking.MatchData;
+
 import lombok.Getter;
 
 @Getter
@@ -25,13 +27,13 @@ public class TeamModel implements Comparable<TeamModel> {
 
     private double points = 0;
 
-    public void addHomeMatch(MatchModel match) {
+    public void addHomeMatch(MatchData match) {
         this.numHomeGames += 1;
         this.totalHomeScored += match.getHomeGoals();
         this.totalHomeConceded += match.getAwayGoals();
     }
 
-    public void addAwayMatch(MatchModel match) {
+    public void addAwayMatch(MatchData match) {
         this.numAwayGames += 1;
         this.totalAwayScored += match.getAwayGoals();
         this.totalAwayConceded += match.getHomeGoals();
