@@ -36,6 +36,14 @@ java -jar build/libs/eplranking.jar --help
 
 Produces a CSV table of team ranks based on the expected number of points achieved in a tournament of all teams present in the input data set.
 
+```bash
+java -jar build/libs/eplranking.jar \
+    rank \
+    -d ./datasets \
+    -f 2000 \
+    -l 2018
+```
+
 Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
 
 ```bash
@@ -43,7 +51,8 @@ java -jar build/libs/eplranking.jar \
     rank \
     -d ./datasets \
     -f 2000 \
-    -l 2018
+    -l 2018 \
+    -p ./datasets/2019-2020-partial.csv
 ```
 
 #### Expected Outcome of Single Match
@@ -66,6 +75,14 @@ java -jar build/libs/eplranking.jar \
 
 Produces a CSV table of the highest probability outcomes for each match in a tournament of all teams present in the input data set.
 
+```bash
+java -jar build/libs/eplranking.jar \
+    table \
+    -d ./datasets \
+    -f 2000 \
+    -l 2018
+```
+
 Adding the `-p, --partialSeason` flag will cause the program to limit simulation to completing the partial season provided.
 
 ```bash
@@ -73,5 +90,6 @@ java -jar build/libs/eplranking.jar \
     table \
     -d ./datasets \
     -f 2000 \
-    -l 2018
+    -l 2018 \
+    -p ./datasets/2019-2020-partial.csv
 ```

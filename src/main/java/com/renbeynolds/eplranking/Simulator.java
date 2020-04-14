@@ -72,7 +72,7 @@ public class Simulator {
         this.teamModels = new TreeMap<String,TeamModel>();
 
         // perform initial counts for home and away scores
-        historicMatchData.forEach((MatchData match) -> {
+        this.historicMatchData.forEach((MatchData match) -> {
             leagueModel.addMatch(match);
 
             if(this.partialSeasonMatchData == null || this.partialSeasonMatchData.containsKey(match.getHomeTeamName())) {
@@ -92,7 +92,7 @@ public class Simulator {
         }  
     }
 
-    private boolean haveRealMatchData(Map<String, Map<String, MatchData>> map, String key1, String key2) {
+    protected boolean haveRealMatchData(Map<String, Map<String, MatchData>> map, String key1, String key2) {
         return map != null && map.containsKey(key1) && map.get(key1).containsKey(key2);
     }
 

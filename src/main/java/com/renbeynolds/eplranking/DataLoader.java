@@ -56,10 +56,10 @@ public class DataLoader {
                         Integer.parseInt(data[awayGoalsColumn])
                     ));
                 } else {
-                    homeTeamNameColumn = find(data, "HomeTeam");
-                    awayTeamNameColumn = find(data, "AwayTeam");
-                    homeGoalsColumn = find(data, "FTHG");
-                    awayGoalsColumn = find(data, "FTAG");
+                    homeTeamNameColumn = getColumn(data, "HomeTeam");
+                    awayTeamNameColumn = getColumn(data, "AwayTeam");
+                    homeGoalsColumn = getColumn(data, "FTHG");
+                    awayGoalsColumn = getColumn(data, "FTAG");
                 }
                 row++;
             }
@@ -69,7 +69,7 @@ public class DataLoader {
         return result;
     }
 
-    public static int find(String[] a, String target) {
+    protected static int getColumn(String[] a, String target) {
         return IntStream.range(0, a.length)
                         .filter(i -> target.equals(a[i]))
                         .findFirst()
