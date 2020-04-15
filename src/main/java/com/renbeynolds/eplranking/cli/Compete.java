@@ -2,6 +2,7 @@ package com.renbeynolds.eplranking.cli;
 
 import com.renbeynolds.eplranking.models.MatchModel;
 
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -14,16 +15,27 @@ public class Compete extends BaseCommand {
     @Option(names = {"-a", "--awayTeamName"}, required = true, description = "name of away team")
     String awayTeamName;
 
-    @Option(names = {"-s", "--summary"}, description = "print summary instead of CSV table of all outcomes")
-    boolean summary;
+    @ArgGroup(exclusive = true, multiplicity = "1")
+    Exclusive exclusive;
+
+    static class Exclusive {
+        @Option(names = {"-s", "--summary"}, description = "print summary instead of CSV table of all outcomes")
+        boolean summary;
+    
+        @Option(names = {"-t", "--transpose"}, description = "print CSV data transposed for XYZ plotting")
+        boolean transpose;
+    }
+
 
     @Override
     public void run() {
         super.run();
         simulator.buildModels();
         MatchModel result = simulator.simulateMatch(homeTeamName, awayTeamName);
-        if(summary) {
+        if(exclusive.summary) {
             printSummary(result);
+        } else if(exclusive.transpose) {
+            printProbabilityTableTransposed(result);
         } else {
             printProbabilityTable(result);
         }
@@ -35,6 +47,21 @@ public class Compete extends BaseCommand {
             for(int awayGoals = 0; awayGoals < 11; awayGoals++) {
                 System.out.println(String.format("%d, %d, %.4f", homeGoals, awayGoals, result.getProbability(homeGoals, awayGoals)));
             }
+        }
+    }
+
+    private void printProbabilityTableTransposed(MatchModel result) {
+        for(int homeGoals = 0; homeGoals < 11; homeGoals++) {
+            System.out.printf(String.format(",%d", homeGoals));
+        } 
+        System.out.println();
+        for(int awayGoals = 0; awayGoals < 11; awayGoals++) {
+            System.out.printf(String.format("%d,", awayGoals));
+            for(int homeGoals = 0; homeGoals < 11; homeGoals++) {
+                System.out.printf(String.format("%.4f", result.getProbability(homeGoals, awayGoals)));
+                if(homeGoals < 10) { System.out.printf(","); }
+            }
+            System.out.println();
         }
     }
 

@@ -61,6 +61,8 @@ Displays a CSV table of match scorelines and their probability of occuring.
 
 Adding the `-s, --summary` flag will produce a brief summary of expected results instead of a full CSV table of probabilities.
 
+Adding the `-t, --transpose` flag will print the data transposed for creating a surface plot in Excel.
+
 ```bash
 java -jar build/libs/eplranking.jar \
     compete \
